@@ -3,65 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found - Error 404</title>
+    <title>Error Page Simulator</title>
     <style>
-        /* All styling is kept inside the HTML for simplicity */
+        /* General Styling */
         body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f2f5;
             color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .error-container {
-            text-align: center;
+
+        /* Container for both the menu and the error pages */
+        .container {
             background: white;
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 400px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
         }
-        h1 {
+
+        /* Main Menu View */
+        #menu-view h1 {
+            font-size: 24px;
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Error Page View (Hidden by default) */
+        #error-view {
+            display: none; /* Hidden until a button is clicked */
+        }
+        #error-code {
             font-size: 80px;
             margin: 0;
             color: #e74c3c;
         }
-        h2 {
-            margin-top: 0;
+        #error-title {
             font-size: 24px;
+            margin-top: 0;
         }
-        p {
+        #error-desc {
             color: #666;
             line-height: 1.5;
+            margin-bottom: 25px;
         }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            transition: background 0.3s ease;
+        .back-btn {
+            background-color: #2c3e50;
         }
-        .btn:hover {
-            background-color: #2980b9;
+        .back-btn:hover {
+            background-color: #1a252f;
         }
     </style>
 </head>
 <body>
 
-    <div class="error-container">
-        <h1>404</h1>
-        <h2>Lost in Space?</h2>
-        <p>The page you are looking for doesn't exist or has been moved to a new universe.</p>
-        
-        <a href="index.html" class="btn">Return to Home</a>
+    <div class="container">
+        <div id="menu-view">
+            <h1>Select an Error to Preview</h1>
+            <p>Click a button to trigger the error page.</p>
+            <div class="btn-grid">
+                <button onclick="showError(400)">400 Bad Request</button>
+                <button onclick="showError(401)">401 Unauthorized</button>
+                <button onclick="showError(403)">403 Forbidden</button>
+                <button onclick="showError(404)">404 Not Found</button>
+                <button onclick="showError(500)">500 Internal Error</button>
+                <button onclick="showError(502)">502 Bad Gateway</button>
+                <button onclick="showError(503)">503 Unavailable</button>
+                <button onclick="showError(504)">504 Timeout</button>
+            </div>
+        </div>
+
+        <div id="error-view">
+            <h1 id="error-code">404</h1>
+            <h2 id="error-title">Page Not Found</h2>
+            <p id="error-desc">Description goes here.</p>
+            <button class="back-btn" onclick="goHome()">Go Back Home</button>
+        </div>
     </div>
+
+    <script>
+        // Dictionary containing all the error details
+        const errorData = {
+            400: { title: "Bad Request", desc: "Your browser sent a request that this server could not understand." },
+            401: { title: "Unauthorized", desc: "You lack valid authentication credentials for the requested resource." },
+            403: { title: "Forbidden", desc: "You don't have permission to access this resource." },
+            404: { title: "Page Not Found", desc: "The page you are looking for doesn't exist or has been moved." },
+            500: { title: "Internal Server Error", desc: "The server encountered an unexpected condition that prevented it from fulfilling the request." },
+            502: { title: "Bad Gateway", desc: "The server received an invalid response from the upstream server." },
+            503: { title: "Service Unavailable", desc: "The server is temporarily overloaded or down for maintenance. Please try again later." },
+            504: { title: "Gateway Timeout", desc: "The server did not receive a timely response from the upstream server." }
+        };
+
+        // Function to hide menu and show the requested error
+        function showError(code) {
+            // Update the text on the error page
+            document.getElementById('error-code').innerText = code;
+            document.getElementById('error-title').innerText = errorData[code].title;
+            document.getElementById('error-desc').innerText = errorData[code].desc;
+
+            // Hide the menu, show the error view
+            document.getElementById('menu-view').style.display = 'none';
+            document.getElementById('error-view').style.display = 'block';
+        }
+
+        // Function to go back to the main menu
+        function goHome() {
+            // Hide the error view, show the menu
+            document.getElementById('error-view').style.display = 'none';
+            document.getElementById('menu-view').style.display = 'block';
+        }
+    </script>
 
 </body>
 </html>
